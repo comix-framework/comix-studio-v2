@@ -1,0 +1,328 @@
+"""Exposes a URL that specifies the behavior of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behavior of this scalar."""
+  url: String!
+) on SCALAR
+
+"""
+Direct the client to resolve this field locally, either from the cache or local resolvers.
+"""
+directive @client(
+  """
+  When true, the client will never use the cache for this value. See
+  https://www.apollographql.com/docs/react/essentials/local-state/#forcing-resolvers-with-clientalways-true
+  """
+  always: Boolean
+) on FIELD | FRAGMENT_DEFINITION | INLINE_FRAGMENT
+
+"""
+Export this locally resolved field as a variable to be used in the remainder of this query. See
+https://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables
+"""
+directive @export(
+  """The variable name to export this field as."""
+  as: String!
+) on FIELD
+
+"""
+Specify a custom store key for this result. See
+https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
+"""
+directive @connection(
+  """Specify the store key."""
+  key: String!
+
+  """
+  An array of query argument names to include in the generated custom store key.
+  """
+  filter: [String!]
+) on FIELD
+
+type Banner {
+  id: ID!
+  image: String!
+  herf: String!
+}
+
+type Bookmark {
+  id: ID!
+  user: User!
+  story: Story!
+  createdAt: Float!
+}
+
+type Chapter {
+  id: ID!
+  name: String!
+  slug: String!
+  story: Story!
+  avatar: String!
+  content: [String!]!
+  countViews: Int!
+  countComments: Int!
+  order: Int!
+  createdAt: Float!
+}
+
+enum ChapterSortEnum {
+  CREATED_AT
+}
+
+type Comment {
+  id: ID!
+  user: User!
+  content: String!
+  createdAt: Float!
+}
+
+input CreateBannerInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input CreateCommentInput {
+  """Nội dung bình luận"""
+  content: String!
+  chapter: String!
+}
+
+input CreateErrorInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input CreateRankingInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input CreateReviewInput {
+  story: String!
+
+  """Điểm đánh giá"""
+  rating: Int!
+  content: String!
+}
+
+type Error {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input GetCommentInput {
+  """Order của bình luận"""
+  sort: ChapterSortEnum!
+  page: Int!
+  limit: Int!
+
+  """Order của bình luận"""
+  chapter: String!
+}
+
+input GetReviewsInput {
+  """Order của bình luận"""
+  sort: ReviewSortEnum!
+  page: Int!
+  limit: Int!
+
+  """Order của bình luận"""
+  story: String!
+}
+
+type Mutation {
+  signIn(input: SignInTdo!): Token!
+  signUp(input: SignUpTdo!): Token!
+  createBanner(createBannerInput: CreateBannerInput!): Banner!
+  updateBanner(updateBannerInput: UpdateBannerInput!): Banner!
+  removeBanner(id: Int!): Banner!
+  createReview(input: CreateReviewInput!): Review!
+  toogleBookmark(story: String!): Bookmark
+  createComment(input: CreateCommentInput!): Comment!
+  createRanking(createRankingInput: CreateRankingInput!): Ranking!
+  updateRanking(updateRankingInput: UpdateRankingInput!): Ranking!
+  removeRanking(id: Int!): Ranking!
+  createError(createErrorInput: CreateErrorInput!): Error!
+  updateError(updateErrorInput: UpdateErrorInput!): Error!
+  removeError(id: Int!): Error!
+}
+
+type Notify {
+  """Thành viên hiện tại"""
+  user: User!
+
+  """Nội dung tin nhắn"""
+  msg: String!
+
+  """Thông báo lỗi hay không"""
+  error: Boolean!
+}
+
+type Query {
+  me: User!
+  getStories(filter: StoriesFilterInput!): [Story!]!
+  getStoriesChapters(filter: StoriesFilterInput!): [StoryChapters!]!
+  banners: [Banner!]!
+  banner(id: Int!): Banner!
+  getSearchRecommend(input: SearchRecomment!): [Story!]!
+  getReviews(input: GetReviewsInput!): [Review!]!
+  checkBookmark(story: String!): Bookmark
+  getComments(input: GetCommentInput!): [Comment!]!
+  ranking(id: Int!): Ranking!
+  errors: [Error!]!
+  error(id: Int!): Error!
+}
+
+type Ranking {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type Review {
+  id: ID!
+  user: User!
+  content: String!
+  rating: Int!
+  createdAt: Float!
+}
+
+enum ReviewSortEnum {
+  CREATED_AT
+}
+
+enum Role {
+  User
+  Admin
+}
+
+input SearchRecomment {
+  size: Int!
+}
+
+input SignInTdo {
+  """Email đăng ký"""
+  email: String!
+
+  """Mật khẩu tài khoản"""
+  password: String!
+}
+
+input SignUpTdo {
+  """Email đăng ký"""
+  email: String!
+
+  """Mật khẩu tài khoản"""
+  password: String!
+  name: String!
+}
+
+input StoriesFilterInput {
+  """Sắp xếp của bình luận"""
+  sort: StoriesSort!
+  page: Int!
+  limit: Int!
+
+  """Trạng thái truyện"""
+  status: [StoryStatus!]!
+}
+
+enum StoriesSort {
+  CREATED_AT
+}
+
+type Story {
+  id: ID!
+  name: String!
+  slug: String!
+  avatar: String!
+  content: String!
+  authors: String!
+  teams: String!
+  status: StoryStatus!
+  countViews: Int!
+  countComments: Int!
+  countRating: Int!
+  totalRating: Int!
+  countBookmark: Int!
+  createdAt: Float!
+  updatedAt: Float!
+  rating: Float
+}
+
+type StoryChapters {
+  id: ID!
+  name: String!
+  slug: String!
+  avatar: String!
+  content: String!
+  authors: String!
+  teams: String!
+  status: StoryStatus!
+  countViews: Int!
+  countComments: Int!
+  countRating: Int!
+  totalRating: Int!
+  countBookmark: Int!
+  createdAt: Float!
+  updatedAt: Float!
+  rating: Float
+  chapters: [Chapter!]!
+}
+
+enum StoryStatus {
+  ON_GOING
+  END
+  DROP
+}
+
+type SubComment {
+  chapter: Chapter!
+  story: Story!
+  comment: Comment!
+}
+
+"""Nhận review mới nhất"""
+type SubReview {
+  story: Story!
+  review: Review!
+}
+
+type Subscription {
+  subReview(story: String!): SubReview!
+  subComment(chapter: String!): SubComment!
+
+  """Nhận thông báo"""
+  subNotify: Notify!
+}
+
+type Token {
+  """JSON Web Token"""
+  token: String!
+}
+
+input UpdateBannerInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input UpdateErrorInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input UpdateRankingInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  slug: String!
+  role: Role!
+  avatar: String
+  createdAt: String!
+}
