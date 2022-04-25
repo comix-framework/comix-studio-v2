@@ -1,13 +1,28 @@
 <template>
   <div>
-
     <IconsView />
     <nuxt-page />
-
   </div>
 </template>
 
-<script setup></script>
+<script setup lang="ts">
+import { useNuxtApp } from '#app'
+import { onMounted, useNotify } from '#imports'
+import { linkBuilder } from '~/graphql/link'
+import { useUser } from '~/stores/user'
+
+onMounted(() => {
+  const userStore = useUser()
+
+  if (userStore.auth) {
+    const { $apollo } = useNuxtApp()
+    $apollo.apolloClient.setLink(linkBuilder(true))
+
+    const notifyStore = useNotify()
+    notifyStore.startSub()
+  }
+})
+</script>
 
 <style>
 .btn-effect {

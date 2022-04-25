@@ -1,14 +1,16 @@
 <template>
   <div>
-    <div @click="() => console.log(refEl)" :ref="(el) => refEl = el">ok</div>
+    <div :ref="(el) => refEl = el" @click="() => console.log(refEl)">
+      ok
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 
-import {ref, watch} from '#imports'
+import { ref, watch } from '#imports'
 
-let refEl = ref()
+const refEl = ref()
 
 watch(() => refEl.value, (el) => {
   console.log('el', el)
@@ -18,6 +20,6 @@ watch(() => refEl.value, (el) => {
 
 <script lang="ts">
 export default {
-  name: "ModalTest"
+  name: 'ModalTest'
 }
 </script>

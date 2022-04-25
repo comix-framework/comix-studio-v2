@@ -1,10 +1,6 @@
 import { defineNuxtPlugin } from '#app'
-import anime from 'animejs'
+// import Vue from 'vue'
 
 export default defineNuxtPlugin(() => {
-  return {
-    provide: {
-      anime
-    }
-  }
+  return {}
 })

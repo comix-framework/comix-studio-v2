@@ -25,7 +25,7 @@ directive @export(
 ) on FIELD
 
 """
-Specify a custom store key for this result. See
+Specify a custom stores key for this result. See
 https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
 """
 directive @connection(

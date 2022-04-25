@@ -1,15 +1,13 @@
-import {defineNuxtPlugin} from '#app'
-import { useCookie, setCookie } from 'h3'
+import { defineNuxtPlugin } from '#app'
+import { useCookie } from 'h3'
+import { useUser } from '~/stores/user'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-    const req = nuxtApp.ssrContext.req
-    const _token = useCookie(req, '_token')
-
-    if(_token) {
-        setCookie(req, '_token', _token, {
-            maxAge: 60 * 60 * 24 * 7,
-            httpOnly: true
-        })
-    }
-
+  const req = nuxtApp.ssrContext.req
+  const _token = useCookie(req, '_token')
+  const userStore = useUser(nuxtApp.$pinia)
+  if (_token) {
+    userStore.setToken(_token)
+    await userStore.getMe()
+  }
 })

@@ -94,6 +94,10 @@ onMounted(() => {
   setTimeout(() => { c.modal.value.init() }, 500)
 })
 
+onMounted(() => {
+  // setTimeout(() => { notify.subNotify.start() }, 3000)
+})
+
 defineExpose({
   ...c
 })

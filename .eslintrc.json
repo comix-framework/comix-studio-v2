@@ -19,5 +19,8 @@
     "vue",
     "@typescript-eslint"
   ],
-  "rules": {}
+  "rules": {
+    "@typescript-eslint/ban-ts-comment": "off",
+    "no-console": "off"
+  }
 }
