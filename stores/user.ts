@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import { useNuxtApp } from '#app'
 import { IUser } from '~/models/user'
 import { GET_ME } from '~/graphql/query/user.query'
-import { Me } from '~/graphql/query/__generated__/Me'
 
 interface IUserStore {
   user?: IUser,

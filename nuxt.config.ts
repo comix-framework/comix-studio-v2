@@ -8,11 +8,13 @@ export default defineNuxtConfig({
       path: '~/components',
       pathPrefix: false
     }
+    // { path: 'node_modules/ant-design-vue/es', pathPrefix: false, prefix: 'a' }
   ],
   build: {
     transpile: [
       '@apollo/client',
       'ts-invariant/process'
+      // 'ant-design-vue'
     ]
   },
   modules: ['@nuxtjs/tailwindcss'],
@@ -20,8 +22,6 @@ export default defineNuxtConfig({
     ['@pinia/nuxt', { disableVuex: true }]
   ],
   vite: {
-    plugins: [
-      // eslintPlugin()
-    ]
+    configFile: './vite.config.ts'
   }
 })

@@ -6,13 +6,13 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'AuthPage'
-}
-</script>
+<script setup lang="ts">
+import { definePageMeta } from '#imports'
 
-<script setup lang="ts"></script>
+definePageMeta({
+  layout: 'blank'
+})
+</script>
 
 <style>
 .modal-content {

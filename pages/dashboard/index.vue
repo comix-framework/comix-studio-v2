@@ -1,24 +1,19 @@
 <template>
-  <div class="dashboard">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header">
-              <h4 class="card-title">
-                <i class="fa fa-fw fa-dashboard" />
-                Dashboard
-              </h4>
-            </div>
-            <div class="card-body">
-              <p>
-                This is the dashboard page.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div>
+    <!-- Charts -->
+    <a-row :gutter="24" type="flex" align="stretch">
+      <a-col :span="24" :lg="10" class="mb-24">
+        <!-- Active Users Card -->
+        <CardBarChart />
+        <!-- Active Users Card -->
+      </a-col>
+      <a-col :span="24" :lg="14" class="mb-24">
+        <!-- Sales Overview Card -->
+        <CardLineChart />
+        <!-- / Sales Overview Card -->
+      </a-col>
+    </a-row>
+    <!-- / Charts -->
   </div>
 </template>
 
@@ -30,3 +25,13 @@ definePageMeta({
 })
 
 </script>
+
+<style>
+#dashboard #page-body {
+  height: auto;
+}
+
+#dashboard #page-body > div {
+  background-color: transparent;
+}
+</style>

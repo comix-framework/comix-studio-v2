@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <IconsView />
+  <NuxtLayout>
     <nuxt-page />
-  </div>
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
@@ -23,6 +22,8 @@ onMounted(() => {
   }
 })
 </script>
+
+<style src="~/assets/css/theme.less" lang="less"></style>
 
 <style>
 .btn-effect {
