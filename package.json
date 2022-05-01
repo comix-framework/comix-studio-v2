@@ -3,6 +3,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "PORT=8080 nuxi dev",
+    "apollo:auto": "npm run apollo:schema && npm run apollo:codegen",
     "apollo:schema": "npx apollo client:download-schema --endpoint=http://localhost:3000/graphql schema.graphqls",
     "apollo:codegen": "npx apollo codegen:generate --localSchemaFile=schema.graphqls --target=typescript --tagName=gql --includes=./graphql/**/*.ts",
     "generate": "nuxt generate",
@@ -12,6 +13,7 @@
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^9.0.0",
     "@nuxtjs/tailwindcss": "^5.0.3",
+    "@types/uuid": "^8.3.4",
     "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
@@ -24,17 +26,22 @@
     "vue": "^3.2.33"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^6.1.0",
     "@apollo/client": "^3.5.10",
     "@pinia/nuxt": "^0.1.8",
+    "@tailwindcss/aspect-ratio": "^0.4.0",
     "@tailwindcss/line-clamp": "^0.3.1",
     "@vue/apollo-composable": "^4.0.0-alpha.16",
     "animejs": "^3.2.1",
     "ant-design-vue": "^3.2.0",
+    "axios": "^0.27.2",
     "chart.js": "^3.7.1",
     "dayjs": "^1.11.1",
     "graphql": "^16.3.0",
     "graphql-tag": "^2.12.6",
     "graphql-ws": "^5.7.0",
+    "uuid": "^8.3.2",
+    "vuedraggable": "^4.1.0",
     "ws": "^8.5.0"
   }
 }

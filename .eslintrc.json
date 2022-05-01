@@ -21,6 +21,7 @@
   ],
   "rules": {
     "@typescript-eslint/ban-ts-comment": "off",
-    "no-console": "off"
+    "no-console": "off",
+    "vue/no-v-model-argument": "off"
   }
 }

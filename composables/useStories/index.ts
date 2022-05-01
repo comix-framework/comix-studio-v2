@@ -8,14 +8,24 @@ import { GetCountStories } from '~/graphql/query/__generated__/getCountStories'
 export const useStories = () => {
   const page = useState('page', () => 0)
 
-  const { load: getStories, result } = useLazyQuery<StudioStories>(GET_STORIES, {
+  const storiesQuery = useLazyQuery<StudioStories>(GET_STORIES, {
     filter: {
       page: page.value,
       sort: StoriesSortEnum.CREATED_AT,
-      limit: 5
+      limit: 4
     }
   })
-  const stories = useResult(result, [], data => data?.studioStories)
+  const getStories = () => {
+    return storiesQuery.load()
+  }
+
+  const changePage = (_page: number) => {
+    page.value = _page
+    storiesQuery.variables.value.filter.page = page.value
+    getStories()
+  }
+
+  const stories = useResult(storiesQuery.result, [], data => data?.studioStories)
 
   const { load: getCountStories, result: countResult } = useLazyQuery<GetCountStories>(GET_COUNT_STORIES)
   const count = useResult(countResult, 0, data => data?.studioCountStories)
@@ -25,6 +35,8 @@ export const useStories = () => {
     page,
     count,
     getStories,
-    getCountStories
+    getCountStories,
+    loading: storiesQuery.loading,
+    changePage
   }
 }

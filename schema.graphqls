@@ -56,12 +56,18 @@ type Chapter {
   name: String!
   slug: String!
   story: Story!
-  avatar: String!
-  content: [String!]!
+  avatar: String
+  content: [ChapterContent!]!
   countViews: Int!
   countComments: Int!
   order: Int!
   createdAt: Float!
+}
+
+type ChapterContent {
+  id: ID!
+  storage: String!
+  src: String!
 }
 
 enum ChapterSortEnum {
@@ -170,6 +176,9 @@ type Query {
   getStoriesChapters(filter: StoriesFilterInput!): [StoryChapters!]!
   studioStories(filter: MyStoriesFilter!): [Story!]!
   studioCountStories: Int!
+  studioStory(story: String!): Story!
+  studioChapters(story: String!): [Chapter!]!
+  studioChapter(chapter: String!): Chapter!
   banners: [Banner!]!
   banner(id: Int!): Banner!
   getSearchRecommend(input: SearchRecomment!): [Story!]!

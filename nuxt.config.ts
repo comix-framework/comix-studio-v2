@@ -14,13 +14,23 @@ export default defineNuxtConfig({
     transpile: [
       '@apollo/client',
       'ts-invariant/process'
-      // 'ant-design-vue'
     ]
   },
   modules: ['@nuxtjs/tailwindcss'],
   buildModules: [
     ['@pinia/nuxt', { disableVuex: true }]
   ],
+  hooks: {
+    'pages:extend' (routes) {
+      routes.forEach((route) => {
+        if (route.name === 'story') {
+          route.path = '/story/:slug'
+        } else if (route.name === 'chapter') {
+          route.path = '/chapter/:slug'
+        }
+      })
+    }
+  },
   vite: {
     configFile: './vite.config.ts'
   }

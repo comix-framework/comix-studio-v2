@@ -24,8 +24,8 @@
           </a>
         </div>
 
-        <div id="page-body" class="px-[32px] pt-[32px] w-full">
-          <div class="w-full h-full bg-white p-[32px]">
+        <div id="page-body" class="p-[32px] w-full overflow-y-auto">
+          <div class="w-full bg-white p-[32px]">
             <slot />
           </div>
         </div>
@@ -68,6 +68,9 @@ export default {
 <style>
 #page-body {
   height: calc(100vh - 70px);
+}
+#page-body > div {
+  min-height: calc(100vh - 70px - 35px - 35px);
 }
 </style>
 

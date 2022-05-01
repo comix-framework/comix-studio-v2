@@ -5,7 +5,7 @@
   >
     <label class="absolute right-5 top-6 cursor-pointer logo" for="sidebarInput">
       <svg width="18px" height="18px" fill="currentColor">
-        <use xlink:href="#i-close" />
+        <use xlink:href="#i-times" />
       </svg>
     </label>
 
