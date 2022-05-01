@@ -43,7 +43,7 @@
           <div class="h-3" />
 
           <client-only>
-            <comic-form v-model="c.chapter.value.content" />
+            <comic-form v-model:value="c.chapter.value.content" />
           </client-only>
         </a-form-item>
       </a-form>

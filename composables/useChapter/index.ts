@@ -2,10 +2,12 @@
  * @param id { String }
  * @constructor
  */
-import { useQuery, useResult } from '@vue/apollo-composable'
-import { useNuxtApp } from '#app'
+import { useQuery } from '@vue/apollo-composable'
+import { useNuxtApp, useState } from '#app'
 import { GET_CHAPTER } from '~/graphql/query/story.query'
-import { StudioChapter } from '~/graphql/query/__generated__/StudioChapter'
+// eslint-disable-next-line camelcase
+import { StudioChapter, StudioChapter_studioChapter } from '~/graphql/query/__generated__/StudioChapter'
+import { watch } from '#build/imports'
 
 export const UseChapter = (id: string) => {
   // const { $apollo } = useNuxtApp()
@@ -13,7 +15,13 @@ export const UseChapter = (id: string) => {
   const { loading, result } = useQuery<StudioChapter>(GET_CHAPTER, {
     chapter: id
   })
-  const chapter = useResult(result, undefined, data => Object.assign({}, data.studioChapter))
+  // eslint-disable-next-line camelcase
+  const chapter = useState<StudioChapter_studioChapter>('chapter', () => undefined)
+  watch(result, (data) => {
+    if (data.studioChapter) {
+      chapter.value = data.studioChapter
+    }
+  })
 
   const { $axios } = useNuxtApp()
   const uploadImage = async (body: FormData) => {
@@ -22,9 +30,15 @@ export const UseChapter = (id: string) => {
     return data
   }
 
+  /**
+   * Select image
+   */
+  const selectImages = useState<string[]>('selectImages', () => [])
+
   return {
     loading,
     chapter,
-    uploadImage
+    uploadImage,
+    selectImages
   }
 }

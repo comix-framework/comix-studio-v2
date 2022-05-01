@@ -19,12 +19,12 @@
   >
     <template #item="{element}">
       <div
-        class="col-span-2 image-item border-[8px] border-white shadow-lg relative"
+        class="col-span-2 image-item shadow-lg relative"
       >
-        <div class="absolute z-20 flex justify-content items-center w-full h-full justify-center text-white text-[25px]">
+        <div class="absolute z-20 flex justify-content items-center w-full h-full justify-center text-white text-[25px] _overlay animate">
           <check-outlined />
         </div>
-        <a-spin class="z-10" :spinning="!!element.isLoading">
+        <a-spin wrapper-class-name="z-10 h-full w-full border-[8px] border-white overflow-hidden _img animate" :spinning="!!element.isLoading">
           <img class="w-full h-full object-cover" :src="$cdn(element.src, element.storage)" alt="">
         </a-spin>
       </div>
@@ -73,9 +73,13 @@ const props = defineProps({
   value: {
     type: Array,
     default: () => []
+  },
+  selected: {
+    type: Array,
+    default: () => []
   }
 })
-const content = useState('content', () => props.value)
+const content = useState('content', () => [...props.value])
 
 const count = computed(() => content.value.length)
 
@@ -94,12 +98,14 @@ const uploadImage = async (file: File, index: number) => {
   const formData = new FormData()
   formData.append('image', file)
   const { data } = await uploadToServer(formData)
-  content[index - 1] = {
-    id: content[index - 1],
+  content.value[index - 1] = {
+    // @ts-ignore
+    id: content.value[index - 1].id,
     src: data,
-    storage: 'local'
+    storage: 'local',
+    isLoading: false
   }
-  emit('input', content)
+  emit('input', content.value)
 }
 
 const onChangeFiles = ({ files }) => {
@@ -150,4 +156,40 @@ export default {
   aspect-ratio: 7/10;
   overflow: hidden;
 }
+
+#chapter-form.is-edit ._img {
+  filter: blur(1px) brightness(0.8);
+}
+
+#chapter-form ._img .ant-spin-container {
+  width: 100%;
+  height: 100%;
+}
+
+#chapter-form:not(.is-edit) ._overlay > span {
+  opacity: 0;
+  transform: scale(0);
+}
+
+/*#chapter-form.is-edit .image-item  {
+  !* Start the shake animation and make the animation last for 0.5 seconds *!
+  animation: shake 1s;
+
+  !* When the animation is finished, start again *!
+  animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}*/
 </style>
