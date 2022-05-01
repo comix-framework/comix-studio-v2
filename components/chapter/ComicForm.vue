@@ -1,6 +1,6 @@
 <template>
   <draggable
-    v-model="content"
+    v-model="store.chapter.content"
     class="grid grid-cols-12 gap-5"
     v-bind="{
       animation: 200,
@@ -21,6 +21,9 @@
       <div
         class="col-span-2 image-item shadow-lg relative"
       >
+        <!--
+        <input v-model="selectedImages" type="checkbox" class="hidden" name="chapter-content-check-box" :value="element.id">
+-->
         <div class="absolute z-20 flex justify-content items-center w-full h-full justify-center text-white text-[25px] _overlay animate">
           <check-outlined />
         </div>
@@ -65,23 +68,11 @@ import draggable from 'vuedraggable'
 import { v4 as uuidv4 } from 'uuid'
 import { PlusOutlined, CheckOutlined } from '@ant-design/icons-vue'
 import { useNuxtApp, useState } from '#app'
-import { computed } from '#imports'
+import { useChapter } from '~/stores/chapter'
+
+const store = useChapter()
 
 const { $cdn } = useNuxtApp()
-
-const props = defineProps({
-  value: {
-    type: Array,
-    default: () => []
-  },
-  selected: {
-    type: Array,
-    default: () => []
-  }
-})
-const content = useState('content', () => [...props.value])
-
-const count = computed(() => content.value.length)
 
 const drag = useState('drag', () => false)
 
@@ -92,34 +83,31 @@ const uploadToServer = async (body: FormData) => {
   return data
 }
 
-const emit = defineEmits(['input'])
-
 const uploadImage = async (file: File, index: number) => {
   const formData = new FormData()
   formData.append('image', file)
   const { data } = await uploadToServer(formData)
-  content.value[index - 1] = {
-    // @ts-ignore
-    id: content.value[index - 1].id,
+  // @ts-ignore
+  store.chapter.content[index - 1] = {
+    id: store.chapter.content[index - 1].id,
     src: data,
-    storage: 'local',
-    isLoading: false
+    storage: 'local'
   }
-  emit('input', content.value)
 }
 
 const onChangeFiles = ({ files }) => {
   for (let i = 0; i < files.length; i++) {
-    content.value = [
-      ...content.value,
+    store.chapter.content = [
+      ...store.chapter.content,
       {
         id: uuidv4(),
         src: URL.createObjectURL(files[i]),
+        // @ts-ignore
         isLoading: true,
         storage: 'blob'
       }
     ]
-    uploadImage(files[i], count.value)
+    uploadImage(files[i], store.count)
   }
 }
 

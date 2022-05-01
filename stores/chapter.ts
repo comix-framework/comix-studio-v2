@@ -1,22 +1,24 @@
 import { defineStore } from 'pinia'
 import { StudioChapter_studioChapter } from '~/graphql/query/__generated__/StudioChapter'
 
-interface IChapterStore {
+interface IUserStore {
   chapter?: StudioChapter_studioChapter
-  _token: string
 }
 
 export const useChapter = defineStore({
   id: 'chapter',
 
-  state: (): IChapterStore => ({
-    chapter: null,
-    _token: ''
+  state: (): IUserStore => ({
+    chapter: null
   }),
 
   getters: {
-    count: state => state.chapter?.content?.length || 0
+    count: state => state.chapter?.content.length || 0
   },
 
-  actions: {}
+  actions: {
+    setChapter (chapter: StudioChapter_studioChapter) {
+      this.chapter = chapter
+    }
+  }
 })
