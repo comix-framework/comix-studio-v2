@@ -36,4 +36,8 @@ onMounted(() => {
 .animate {
   @apply transition duration-300 ease-in-out
 }
+.ant-btn>.ant-btn-loading-icon {
+  position: relative;
+  top: -4px;
+}
 </style>

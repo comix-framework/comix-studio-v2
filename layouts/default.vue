@@ -12,7 +12,7 @@
 
       <div class="w-full h-screen animate">
         <div class="h-[70px] w-full bg-white relative top-0 left-0 right-0 z-10 px-[32px] flex items-center">
-          <a class="text-base hover:text-theme-text text-theme-text flex items-center">
+          <a class="text-base hover:text-theme-text text-theme-text flex items-center mr-auto">
             <svg class="fill-current" width="1em" height="1em">
               <use xlink:href="#i-back" />
             </svg>
@@ -22,6 +22,8 @@
             </span>
 
           </a>
+
+          <div id="actions" />
         </div>
 
         <div id="page-body" class="p-[32px] w-full overflow-y-auto">

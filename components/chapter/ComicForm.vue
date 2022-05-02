@@ -1,11 +1,11 @@
 <template>
   <draggable
     v-model="store.chapter.content"
-    class="grid grid-cols-12 gap-5"
+    class="grid grid-cols-12 gap-6"
     v-bind="{
       animation: 200,
       group: 'description',
-      disabled: false,
+      disabled: store.isEdit,
       ghostClass: 'ghost'
     }"
     item-key="id"
@@ -21,13 +21,22 @@
       <div
         class="col-span-2 image-item shadow-lg relative"
       >
-        <!--
-        <input v-model="selectedImages" type="checkbox" class="hidden" name="chapter-content-check-box" :value="element.id">
--->
-        <div class="absolute z-20 flex justify-content items-center w-full h-full justify-center text-white text-[25px] _overlay animate">
-          <check-outlined />
-        </div>
-        <a-spin wrapper-class-name="z-10 h-full w-full border-[8px] border-white overflow-hidden _img animate" :spinning="!!element.isLoading">
+        <input
+          :id="'chapter-content-' + element.id "
+          v-model="store.selected"
+          type="checkbox"
+          class="hidden"
+          name="chapter-content-check-box"
+          :value="element.id"
+        >
+
+        <button class="absolute _delete z-[21] right-2 top-2 text-white bg-[#ff4d4f] w-7 h-7 flex justify-center items-center rounded-md animate" @click.prevent="store.removeImages([element.id])">
+          <delete-outlined />
+        </button>
+        <label :for="'chapter-content-' + element.id " class="cursor-pointer absolute z-20 flex justify-content items-center w-full h-full justify-center text-white _overlay animate">
+          <check-outlined :style="{ fontSize: '25px' }" class="animate" />
+        </label>
+        <a-spin wrapper-class-name="cursor-pointer z-10 h-full w-full border-[8px] border-white overflow-hidden _img animate" :spinning="!!element.isLoading">
           <img class="w-full h-full object-cover" :src="$cdn(element.src, element.storage)" alt="">
         </a-spin>
       </div>
@@ -66,7 +75,7 @@
 import draggable from 'vuedraggable'
 
 import { v4 as uuidv4 } from 'uuid'
-import { PlusOutlined, CheckOutlined } from '@ant-design/icons-vue'
+import { PlusOutlined, CheckOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 import { useNuxtApp, useState } from '#app'
 import { useChapter } from '~/stores/chapter'
 
@@ -158,12 +167,16 @@ export default {
   opacity: 0;
   transform: scale(0);
 }
+#chapter-form:not(.is-edit) ._overlay {
+  opacity: 0;
+  visibility: hidden;
+}
 
-/*#chapter-form.is-edit .image-item  {
-  !* Start the shake animation and make the animation last for 0.5 seconds *!
+#chapter-form.is-edit .image-item  {
+  /* Start the shake animation and make the animation last for 0.5 seconds */
   animation: shake 1s;
 
-  !* When the animation is finished, start again *!
+  /* When the animation is finished, start again */
   animation-iteration-count: infinite;
 }
 
@@ -179,5 +192,21 @@ export default {
   80% { transform: translate(-1px, -1px) rotate(1deg); }
   90% { transform: translate(1px, 2px) rotate(0deg); }
   100% { transform: translate(1px, -2px) rotate(-1deg); }
-}*/
+}
+
+.image-item > input:not(:checked) ~ ._overlay span {
+  transform: scale(0);
+  opacity: 0;
+}
+
+.image-item > input:checked ~ ._delete {
+  opacity: 0;
+  transform: scale(0);
+}
+
+#chapter-form:not(.is-edit) .image-item > ._delete {
+  opacity: 0;
+  transform: scale(0);
+  visibility: visible;
+}
 </style>
