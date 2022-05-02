@@ -61,6 +61,9 @@
         </a-form>
       </a-spin>
       <Teleport to="#actions">
+        <van-button type="primary">
+          Primary
+        </van-button>
         <a-button
           v-if="!isDisabled.value"
           :loading="isLoading"
@@ -84,6 +87,7 @@
 import { useRoute, useState } from '#app'
 import { EditOutlined, CloseOutlined, DeleteOutlined, CheckOutlined } from '@ant-design/icons-vue'
 import { useMutation, useQuery } from '@vue/apollo-composable'
+// import { message } from 'ant-design-vue'
 import ComicForm from '~/components/chapter/ComicForm.vue'
 import { StudioChapter } from '~/graphql/query/__generated__/StudioChapter'
 import { GET_CHAPTER, GET_STORY_CHAPTERS } from '~/graphql/query/story.query'
@@ -154,6 +158,7 @@ const onSubmit = async () => {
           avatar: ''
         }
       })
+      // message.success('Chỉnh sửa chương thành công')
     } else {
       const { mutate } = useMutation<StudioPublishChapterVariables>(PUBLISH_CHAPTER)
       await mutate({
@@ -164,8 +169,11 @@ const onSubmit = async () => {
           avatar: ''
         }
       })
+      // message.success('Đăng chương thành công')
     }
-  } catch {}
+  } catch (e) {
+    console.log(e)
+  }
   isLoading.value = false
 }
 

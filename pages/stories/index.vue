@@ -27,7 +27,7 @@
           </template>
 
           <template v-else-if="column.key === 'action'">
-            <a-button type="primary" size="small">
+            <a-button type="primary" size="small" @click="$router.push({ name: 'chapter', params: { slug: record.slug } })">
               <svg class="fill-current text-white" width="1em" height="1em">
                 <use xlink:href="#i-upload" />
               </svg>

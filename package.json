@@ -23,6 +23,7 @@
     "nuxt": "3.0.0-rc.1",
     "typescript": "^4.6.3",
     "vite-plugin-eslint": "^1.5.2",
+    "vite-plugin-style-import": "^1.4.1",
     "vue": "^3.2.33"
   },
   "dependencies": {
@@ -41,6 +42,7 @@
     "graphql-tag": "^2.12.6",
     "graphql-ws": "^5.7.0",
     "uuid": "^8.3.2",
+    "vant": "^3.4.9",
     "vuedraggable": "^4.1.0",
     "ws": "^8.5.0"
   }
