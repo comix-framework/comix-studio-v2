@@ -2,7 +2,7 @@
   <a-table id="listChapters" :columns="columns" :data-source="chapters">
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'name'">
-        <div class="flex items-center">
+        <nuxt-link :to="{ name: 'chapter', params: { slug: record.slug } }" class="flex items-center text-gray-700">
           <img
             v-if="record.avatar"
             width="60"
@@ -12,7 +12,7 @@
             class="rounded"
           >
           <span class="font-medium ml-2">{{ record.name }}</span>
-        </div>
+        </nuxt-link>
       </template>
 
       <template v-else-if="column.key === 'createdAt'">

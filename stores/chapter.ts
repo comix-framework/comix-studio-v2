@@ -20,7 +20,8 @@ export const useChapter = defineStore({
   }),
 
   getters: {
-    count: state => state.chapter?.content.length || 0
+    count: state => state.chapter?.content.length || 0,
+    story: state => state.chapter?.story
   },
 
   actions: {

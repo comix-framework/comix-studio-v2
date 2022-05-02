@@ -6,10 +6,10 @@
 import { StoryStatus } from "./../../../__generated__/globalTypes";
 
 // ====================================================
-// GraphQL query operation: StudioStory
+// GraphQL query operation: StudioStoryChapters
 // ====================================================
 
-export interface StudioStory_studioStory {
+export interface StudioStoryChapters_studioStory {
   __typename: "Story";
   id: string;
   name: string;
@@ -24,10 +24,22 @@ export interface StudioStory_studioStory {
   countRating: number;
 }
 
-export interface StudioStory {
-  studioStory: StudioStory_studioStory;
+export interface StudioStoryChapters_studioChapters {
+  __typename: "Chapter";
+  id: string;
+  name: string;
+  slug: string;
+  avatar: string | null;
+  countViews: number;
+  countComments: number;
+  createdAt: number;
 }
 
-export interface StudioStoryVariables {
+export interface StudioStoryChapters {
+  studioStory: StudioStoryChapters_studioStory;
+  studioChapters: StudioStoryChapters_studioChapters[];
+}
+
+export interface StudioStoryChaptersVariables {
   story: string;
 }

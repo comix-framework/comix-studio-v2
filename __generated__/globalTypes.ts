@@ -22,6 +22,18 @@ export enum StoryStatus {
   ON_GOING = "ON_GOING",
 }
 
+export interface ChapterContentInput {
+  id?: string | null;
+  storage: string;
+  src: string;
+}
+
+export interface CreateChapterInput {
+  name: string;
+  avatar?: string | null;
+  content: ChapterContentInput[];
+}
+
 export interface MyStoriesFilter {
   sort: StoriesSort;
   page: number;

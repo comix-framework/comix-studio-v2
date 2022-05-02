@@ -20,8 +20,8 @@ export const GET_COUNT_STORIES = gql`
     }
 `
 
-export const GET_STORY = gql`
-    query StudioStory($story: String!) {
+export const GET_STORY_CHAPTERS = gql`
+    query StudioStoryChapters($story: String!) {
         studioStory(story: $story) {
             id
             name
@@ -69,6 +69,24 @@ export const GET_CHAPTER = gql`
             countComments
             order
             createdAt
+        }
+    }
+`
+
+export const GET_STORY = gql`
+    query StudioStory($story: String!) {
+        studioStory(story: $story) {
+            id
+            name
+            slug
+            avatar
+            content
+            authors
+            teams
+            status
+            countViews
+            updatedAt
+            countRating
         }
     }
 `

@@ -33,6 +33,22 @@
       </div>
 
       <StoryChapters class="mt-6" :chapters="chapters" />
+
+      <client-only>
+        <Teleport to="#actions">
+          <a-button
+            class="uppercase fix-icon-button flex"
+            type="primary"
+            size="large"
+            @click="$router.push({ name: 'chapter-create', params: { slug: story.slug } })"
+          >
+            <template #icon>
+              <plus-outlined class="relative -top-1" />
+            </template>
+            Chương Mới
+          </a-button>
+        </Teleport>
+      </client-only>
     </div>
     <div v-else />
   </div>
@@ -42,15 +58,16 @@
 
 import { useQuery, useResult } from '@vue/apollo-composable'
 import { useNuxtApp, useRoute } from '#app'
-import { GET_STORY } from '~/graphql/query/story.query'
-import { StudioStory } from '~/graphql/query/__generated__/StudioStory'
+import { PlusOutlined } from '@ant-design/icons-vue'
+import { GET_STORY_CHAPTERS } from '~/graphql/query/story.query'
 import { computed } from '#imports'
 import StoryChapters from '~/components/story/StoryChapters.vue'
+import { StudioStoryChapters } from '~/graphql/query/__generated__/StudioStoryChapters'
 
 const $route = useRoute()
 const { $dayjs } = useNuxtApp()
 
-const { result, loading: isLoading } = useQuery<StudioStory>(GET_STORY, {
+const { result, loading: isLoading } = useQuery<StudioStoryChapters>(GET_STORY_CHAPTERS, {
   story: $route.params.slug
 })
 

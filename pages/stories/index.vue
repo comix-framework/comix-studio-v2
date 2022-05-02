@@ -10,7 +10,7 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'name'">
-            <div class="flex items-center">
+            <nuxt-link :to="{ name: 'story', params: { slug: record.slug } }" class="flex items-center text-gray-700">
               <img
                 width="60"
                 height="80"
@@ -19,7 +19,7 @@
                 class="rounded"
               >
               <span class="font-medium ml-2">{{ record.name }}</span>
-            </div>
+            </nuxt-link>
           </template>
 
           <template v-else-if="column.key === 'updatedAt'">

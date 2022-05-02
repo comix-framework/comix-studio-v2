@@ -27,6 +27,11 @@ export default defineNuxtConfig({
           route.path = '/story/:slug'
         } else if (route.name === 'chapter') {
           route.path = '/chapter/:slug'
+          // create chapter
+          routes.push(Object.assign({}, route, {
+            name: 'chapter-create',
+            path: '/story/:slug/new'
+          }))
         }
       })
     }

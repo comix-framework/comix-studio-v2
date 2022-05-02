@@ -70,6 +70,12 @@ type ChapterContent {
   src: String!
 }
 
+input ChapterContentInput {
+  id: ID
+  storage: String!
+  src: String!
+}
+
 enum ChapterSortEnum {
   CREATED_AT
 }
@@ -84,6 +90,12 @@ type Comment {
 input CreateBannerInput {
   """Example field (placeholder)"""
   exampleField: Int!
+}
+
+input CreateChapterInput {
+  name: String!
+  avatar: String
+  content: [ChapterContentInput!]!
 }
 
 input CreateCommentInput {
@@ -138,6 +150,8 @@ input GetReviewsInput {
 type Mutation {
   signIn(input: SignInTdo!): Token!
   signUp(input: SignUpTdo!): Token!
+  studioPublishChapter(story: String!, input: CreateChapterInput!): Chapter!
+  studioUpdateChapter(chapter: String!, input: CreateChapterInput!): Chapter!
   createBanner(createBannerInput: CreateBannerInput!): Banner!
   updateBanner(updateBannerInput: UpdateBannerInput!): Banner!
   removeBanner(id: Int!): Banner!

@@ -1,7 +1,7 @@
 <template>
   <div>
     <client-only>
-      <a-spin :spinning="loading">
+      <a-spin :spinning="isLoading">
         <a-form
           id="chapter-form"
           :ref="(el) => formRef = el"
@@ -59,52 +59,70 @@
             </client-only>
           </a-form-item>
         </a-form>
-
-        <Teleport to="#actions">
-          <a-button
-            v-if="!isDisabled.value"
-            :loading="isLoading"
-            class="uppercase fix-icon-button flex"
-            type="primary"
-            size="large"
-            @click="onSubmit"
-          >
-            <template #icon>
-              <check-outlined class="relative -top-1" />
-            </template>
-            Đăng Tải
-          </a-button>
-        </Teleport>
       </a-spin>
+      <Teleport to="#actions">
+        <a-button
+          v-if="!isDisabled.value"
+          :loading="isLoading"
+          class="uppercase fix-icon-button flex"
+          type="primary"
+          size="large"
+          @click="onSubmit"
+        >
+          <template #icon>
+            <check-outlined class="relative -top-1" />
+          </template>
+          Đăng Tải
+        </a-button>
+      </Teleport>
     </client-only>
   </div>
 </template>
 
 <script setup lang="ts">
+
 import { useRoute, useState } from '#app'
 import { EditOutlined, CloseOutlined, DeleteOutlined, CheckOutlined } from '@ant-design/icons-vue'
-import { useQuery } from '@vue/apollo-composable'
+import { useMutation, useQuery } from '@vue/apollo-composable'
 import ComicForm from '~/components/chapter/ComicForm.vue'
 import { StudioChapter } from '~/graphql/query/__generated__/StudioChapter'
-import { GET_CHAPTER } from '~/graphql/query/story.query'
+import { GET_CHAPTER, GET_STORY_CHAPTERS } from '~/graphql/query/story.query'
 import { useChapter } from '~/stores/chapter'
 import { computed, watch } from '#imports'
+import { PUBLISH_CHAPTER, UPDATE_CHAPTER } from '~/graphql/mutation/chapter.mutation'
+import { StudioPublishChapterVariables } from '~/graphql/mutation/__generated__/StudioPublishChapter'
+import { StudioStory } from '~/graphql/query/__generated__/StudioStory'
+import { StudioUpdateChapter } from '~/graphql/mutation/__generated__/StudioUpdateChapter'
 
 const $route = useRoute()
 
 const store = useChapter()
 
-const { loading, result } = useQuery<StudioChapter>(GET_CHAPTER, {
-  chapter: $route.params.slug as string
-})
+if ($route.name === 'chapter') {
+  const { loading, result } = useQuery<StudioChapter>(GET_CHAPTER, {
+    chapter: $route.params.slug as string
+  })
 
-watch(result, (result) => {
-  if (result) {
-    store.setChapter(Object.assign({}, result.studioChapter))
-  }
-})
+  watch(result, (result) => {
+    if (result) {
+      store.setChapter(Object.assign({}, result.studioChapter))
+    }
+  })
+} else {
+  const { loading, result } = useQuery<StudioStory>(GET_STORY_CHAPTERS, {
+    story: $route.params.slug as string
+  })
 
-const isDisabled = computed(() => store.isEdit || !store.chapter.name || !store.chapter.content.length || loading.value)
+  watch(result, (result) => {
+    if (result) {
+      const _chapter = Object.assign({}, store.chapter)
+      _chapter.story = result.studioStory
+      store.setChapter(_chapter)
+    }
+  })
+}
+
+const isDisabled = computed(() => store.isEdit || !store.chapter.name || !store.chapter.content.length)
 
 /**
  * Form
@@ -121,15 +139,34 @@ const rules = {
   ]
 }
 
-const isLoading = useState<boolean>('isLoading', () => false)
+const isLoading = useState('isLoading', () => false)
 const onSubmit = async () => {
   isLoading.value = true
   try {
     await formRef.value.validate()
-  } catch (error) {
-    console.error(error)
-  }
-  // isLoading.value = false
+    if ($route.name === 'chapter') {
+      const { mutate } = useMutation<StudioUpdateChapter>(UPDATE_CHAPTER)
+      await mutate({
+        chapter: store.chapter.slug,
+        input: {
+          name: store.chapter.name,
+          content: store.chapter.content.map(item => ({ src: item.src, storage: item.storage })),
+          avatar: ''
+        }
+      })
+    } else {
+      const { mutate } = useMutation<StudioPublishChapterVariables>(PUBLISH_CHAPTER)
+      await mutate({
+        story: store.story.slug,
+        input: {
+          name: store.chapter.name,
+          content: store.chapter.content.map(item => ({ src: item.src, storage: item.storage })),
+          avatar: ''
+        }
+      })
+    }
+  } catch {}
+  isLoading.value = false
 }
 
 </script>
